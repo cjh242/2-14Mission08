@@ -6,5 +6,7 @@
 
         void AddTask(TaskList task);
         void Save();
+
+        public List<TaskList> GetTasksIncludingCategories();
     }
 }

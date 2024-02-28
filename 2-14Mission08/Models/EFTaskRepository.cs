@@ -1,4 +1,6 @@
-﻿namespace _2_14Mission08.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace _2_14Mission08.Models
 {
     public class EFTaskRepository : ITaskRepository
     {
@@ -7,10 +9,8 @@
         { 
             _context = temp;
         }
-
         public List<TaskList> Tasks => _context.TaskLists.ToList();
-
-        public void AddTask(Task task)
+        public void AddTask(TaskList task)
         {
             _context.Add(task);
         }
@@ -19,10 +19,9 @@
         {
             _context.SaveChanges();
         }
-
-        public List<Task> GetTasksIncludingCategories()
+        public List<TaskList> GetTasksIncludingCategories()
         {
-            return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Title).ToList();
+            return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Category).ToList();
         }
     }
 }

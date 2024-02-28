@@ -25,7 +25,7 @@ namespace _2_14Mission08.Controllers
         [HttpGet]
         public IActionResult Quadrant() 
         {
-            var tasks = _taskRepo.GetAllTaskIncludingRepos();
+            var tasks = _taskRepo.GetTasksIncludingCategories();
 
             return View(tasks);
         }
