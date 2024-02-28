@@ -5,23 +5,15 @@ using System.Diagnostics;
 namespace _2_14Mission08.Controllers
 {
     {
-        //Use the home controller to to navigate through the views and use the move collection to post to the database
-        public class HomeController : Controller
+        private readonly ILogger<HomeController> _logger;
+        private readonly ITaskRepository _taskRepo;
+        private readonly ICategoryRepository _categoryRepo;
+
+        public HomeController(ILogger<HomeController> logger, ITaskRepository taskRepo, ICategoryRepository catRepo)
         {
-            private //Need context file here _context;
-
-            //Set up the views for our website to use
-
-            public HomeController(MoviesCollectionContext temp) //Constructor
-            {
-                _context = temp;
-            }
-
-
-
-            public IActionResult Index()
-        {
-            return View();
+            _logger = logger;
+            _taskRepo = taskRepo;
+            _categoryRepo = catRepo;
         }
 
         public IActionResult MatrixForm()
@@ -29,13 +21,38 @@ namespace _2_14Mission08.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Form()
+
+        public IActionResult Quadrant() 
         {
-            ViewBag.Categories = _context.Categories.ToList();
+            var tasks = _taskRepo.TaskList.Include(x => x.Category)
+                .OrderBy(x => x.Title).ToList();
 
-            return View("MoviesCollection", new MovieCollection());
-
+            return View(tasks);
         }
+        [HttpGet]
+        public IActionResult Delete(int Id) 
+        {
+            //get the record to delete by id
+            var recordToDelete = _taskRepo.TaskList
+                .Single(x => x.TaskId == Id);
+
+            ViewBag.Categories = _categoryRepo.Categories
+                .OrderBy(x => x.CategoryName).ToList();
+
+            return View("ConfirmDelete", recordToDelete);
+        }
+        [HttpPost]
+        public IActionResult Delete(TaskList task)
+        {
+            //delete the movie and save changes
+            _taskRepo.TaskList.Remove(task);
+            _taskRepo.SaveChanges();
+
+            return RedirectToAction("ShowMovies");
+        }
+
+        [HttpGet]
+        public IActionResult MatrixForm(){} //add
 
         [HttpPost]
         public IActionResult MatrixForm(//Modelname response)
@@ -60,6 +77,26 @@ namespace _2_14Mission08.Controllers
 
             return View(tasks);
 
+        }
+        [HttpPost]
+        public IActionResult MatrixForm(TaskList task) //add
+        {
+            if (ModelState.IsValid)
+            {
+                //add the new movie 
+                _context.Movies.Add(movie);
+                //save changes to the database
+                _context.SaveChanges();
+
+                //show the confirmation screen
+                return View("Confirmation", movie);
+            }
+            else
+            {
+                ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName).ToList();
+                return View(movie);
+            }
         }
 
         //get the movie id from the database and allow changes to be made
