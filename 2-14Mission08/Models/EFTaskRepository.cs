@@ -2,12 +2,22 @@
 {
     public class EFTaskRepository : ITaskRepository
     {
-        private DbContext _context;
-        public EFTaskRepository(DbContext temp) 
+        private TaskContext _context;
+        public EFTaskRepository(TaskContext temp) 
         { 
             _context = temp;
         }
 
-        public List<TaskList> Tasks => _context.Tasks.ToList();
+        public List<TaskList> Tasks => _context.TaskLists.ToList();
+
+        public void AddTask(Task task)
+        {
+            _context.Add(task);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
     }
 }

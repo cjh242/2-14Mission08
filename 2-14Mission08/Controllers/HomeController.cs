@@ -1,13 +1,15 @@
 using _2_14Mission08.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace _2_14Mission08.Controllers
 {
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ITaskRepository _taskRepo;
-        private readonly ICategoryRepository _categoryRepo;
+        private ITaskRepository _taskRepo;
+        private ICategoryRepository _categoryRepo;
 
         public HomeController(ILogger<HomeController> logger, ITaskRepository taskRepo, ICategoryRepository catRepo)
         {
@@ -16,15 +18,14 @@ namespace _2_14Mission08.Controllers
             _categoryRepo = catRepo;
         }
 
-        public IActionResult MatrixForm()
-        {
-            return View();
+        public IActionResult Index() 
+        { 
+            return View(); 
         }
         [HttpGet]
-
         public IActionResult Quadrant() 
         {
-            var tasks = _taskRepo.TaskList.Include(x => x.Category)
+            var tasks = _taskRepo.Tasks.Include(x => x.Category)
                 .OrderBy(x => x.Title).ToList();
 
             return View(tasks);
@@ -52,25 +53,30 @@ namespace _2_14Mission08.Controllers
         }
 
         [HttpGet]
-        public IActionResult MatrixForm(){} //add
+        public IActionResult MatrixForm()
+        {
+            ViewBag.Categories = _categoryRepo.Categories
+                .OrderBy(x => x.CategoryName).ToList();
+
+            return View("MatrixForm", new TaskList());
+        }
 
         [HttpPost]
-        public IActionResult MatrixForm(//Modelname response)
+        public IActionResult MatrixForm(TaskList item)
         {
             if (ModelState.IsValid)
             {
-                _context.Tasks.Add(response); // Add record to the database
-                _context.SaveChanges();
-                return View("Index", response);
+                _taskRepo.AddTask(item);
+                _taskRepo.Save();
+                return View("Index");
             }
             else
             {
-                ViewBag.Categories = _context.Categories.ToList();
+                ViewBag.Categories = _categoryRepo.Categories.ToList();
 
-                return View(response);
+                return View(item);
             }
         }
-
         public IActionResult MovieTable()
         {
             var tasks = _context.Tasks.ToList();
@@ -78,27 +84,6 @@ namespace _2_14Mission08.Controllers
             return View(tasks);
 
         }
-        [HttpPost]
-        public IActionResult MatrixForm(TaskList task) //add
-        {
-            if (ModelState.IsValid)
-            {
-                //add the new movie 
-                _context.Movies.Add(movie);
-                //save changes to the database
-                _context.SaveChanges();
-
-                //show the confirmation screen
-                return View("Confirmation", movie);
-            }
-            else
-            {
-                ViewBag.Categories = _context.Categories
-                .OrderBy(x => x.CategoryName).ToList();
-                return View(movie);
-            }
-        }
-
         //get the movie id from the database and allow changes to be made
         [HttpGet]
         public IActionResult Edit(int id)

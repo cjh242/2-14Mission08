@@ -1,11 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace _2_14Mission08.Models
+﻿namespace _2_14Mission08.Models
 {
-    public class EFCategoryRepository
+    public class EFCategoryRepository : ICategoryRepository
     {
-        private DbContext _context;
-        public EFCategoryRepository(DbContext temp)
+        private TaskContext _context;
+        public EFCategoryRepository(TaskContext temp)
         {
             _context = temp;
         }

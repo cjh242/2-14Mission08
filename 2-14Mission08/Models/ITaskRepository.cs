@@ -3,5 +3,8 @@
     public interface ITaskRepository
     {
         List<TaskList> Tasks { get; }
+
+        void AddTask(TaskList task);
+        void Save();
     }
 }
