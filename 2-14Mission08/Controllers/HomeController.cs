@@ -17,7 +17,6 @@ namespace _2_14Mission08.Controllers
             _taskRepo = taskRepo;
             _categoryRepo = catRepo;
         }
-
         public IActionResult Index() 
         { 
             return View(); 
