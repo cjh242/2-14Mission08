@@ -28,27 +28,27 @@ namespace _2_14Mission08.Controllers
 
             return View(tasks);
         }
-        //[HttpGet]
-        //public IActionResult Delete(int Id) 
-        //{
-        //    //get the record to delete by id
-        //    var recordToDelete = _taskRepo.TaskList
-        //        .Single(x => x.TaskId == Id);
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
+            //get the record to delete by id
+            var recordToDelete = _taskRepo.Tasks
+                .Single(x => x.TaskId == Id);
 
-        //    ViewBag.Categories = _categoryRepo.Categories
-        //        .OrderBy(x => x.CategoryName).ToList();
+            ViewBag.Categories = _categoryRepo.Categories
+                .OrderBy(x => x.CategoryName).ToList();
 
-        //    return View("ConfirmDelete", recordToDelete);
-        //}
-        //[HttpPost]
-        //public IActionResult Delete(TaskList task)
-        //{
-        //    //delete the movie and save changes
-        //    _taskRepo.TaskList.Remove(task);
-        //    _taskRepo.SaveChanges();
+            return View("ConfirmDelete", recordToDelete);
+        }
+        [HttpPost]
+        public IActionResult Delete(TaskList item)
+        {
+            
+            _taskRepo.Delete(item);
+            _taskRepo.Save();
 
-        //    return RedirectToAction("ShowMovies");
-        //}
+            return RedirectToAction("ShowMovies");
+        }
 
         [HttpGet]
         public IActionResult MatrixForm()

@@ -19,7 +19,13 @@ namespace _2_14Mission08.Models
         {
             _context.SaveChanges();
         }
-        public List<TaskList> GetTasksIncludingCategories()
+
+        public void Delete(TaskList task) 
+        {
+            _context.Remove(task);
+        }
+
+        public List<Task> GetTasksIncludingCategories()
         {
             return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Category).ToList();
         }
