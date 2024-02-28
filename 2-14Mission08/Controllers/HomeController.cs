@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace _2_14Mission08.Controllers
 {
-    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITaskRepository _taskRepo;
@@ -17,11 +16,12 @@ namespace _2_14Mission08.Controllers
             _categoryRepo = catRepo;
         }
 
-        public IActionResult Index()
+        public IActionResult MatrixForm()
         {
             return View();
         }
         [HttpGet]
+
         public IActionResult Quadrant() 
         {
             var tasks = _taskRepo.TaskList.Include(x => x.Category)
@@ -52,9 +52,31 @@ namespace _2_14Mission08.Controllers
         }
 
         [HttpGet]
-        public IActionResult MatrixForm() //add
+        public IActionResult MatrixForm(){} //add
+
+        [HttpPost]
+        public IActionResult MatrixForm(//Modelname response)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _context.Tasks.Add(response); // Add record to the database
+                _context.SaveChanges();
+                return View("Index", response);
+            }
+            else
+            {
+                ViewBag.Categories = _context.Categories.ToList();
+
+                return View(response);
+            }
+        }
+
+        public IActionResult MovieTable()
+        {
+            var tasks = _context.Tasks.ToList();
+
+            return View(tasks);
+
         }
         [HttpPost]
         public IActionResult MatrixForm(TaskList task) //add
@@ -77,10 +99,29 @@ namespace _2_14Mission08.Controllers
             }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //get the movie id from the database and allow changes to be made
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var recordtoEdit = _context.Tasks
+                .Single(x => x.TaskId == id);
+
+            ViewBag.Categories = _context.Categories.ToList();
+
+            return View("MoviesCollection", recordtoEdit);
+
         }
+
+        //Update and save the changes to the table 
+        [HttpPost]
+        public IActionResult Edit(MovieCollection updatedinfo)
+        {
+            _context.Update(updatedinfo);
+            _context.SaveChanges();
+
+            return RedirectToAction("MovieTable");
+        }
+
+
     }
 }
