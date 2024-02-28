@@ -19,5 +19,10 @@
         {
             _context.SaveChanges();
         }
+
+        public List<Task> GetTasksIncludingCategories()
+        {
+            return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Title).ToList();
+        }
     }
 }

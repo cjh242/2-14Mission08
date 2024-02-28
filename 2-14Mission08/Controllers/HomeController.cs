@@ -25,32 +25,31 @@ namespace _2_14Mission08.Controllers
         [HttpGet]
         public IActionResult Quadrant() 
         {
-            var tasks = _taskRepo.Tasks.Include(x => x.Category)
-                .OrderBy(x => x.Title).ToList();
+            var tasks = _taskRepo.GetAllTaskIncludingRepos();
 
             return View(tasks);
         }
-        [HttpGet]
-        public IActionResult Delete(int Id) 
-        {
-            //get the record to delete by id
-            var recordToDelete = _taskRepo.TaskList
-                .Single(x => x.TaskId == Id);
+        //[HttpGet]
+        //public IActionResult Delete(int Id) 
+        //{
+        //    //get the record to delete by id
+        //    var recordToDelete = _taskRepo.TaskList
+        //        .Single(x => x.TaskId == Id);
 
-            ViewBag.Categories = _categoryRepo.Categories
-                .OrderBy(x => x.CategoryName).ToList();
+        //    ViewBag.Categories = _categoryRepo.Categories
+        //        .OrderBy(x => x.CategoryName).ToList();
 
-            return View("ConfirmDelete", recordToDelete);
-        }
-        [HttpPost]
-        public IActionResult Delete(TaskList task)
-        {
-            //delete the movie and save changes
-            _taskRepo.TaskList.Remove(task);
-            _taskRepo.SaveChanges();
+        //    return View("ConfirmDelete", recordToDelete);
+        //}
+        //[HttpPost]
+        //public IActionResult Delete(TaskList task)
+        //{
+        //    //delete the movie and save changes
+        //    _taskRepo.TaskList.Remove(task);
+        //    _taskRepo.SaveChanges();
 
-            return RedirectToAction("ShowMovies");
-        }
+        //    return RedirectToAction("ShowMovies");
+        //}
 
         [HttpGet]
         public IActionResult MatrixForm()
@@ -60,7 +59,6 @@ namespace _2_14Mission08.Controllers
 
             return View("MatrixForm", new TaskList());
         }
-
         [HttpPost]
         public IActionResult MatrixForm(TaskList item)
         {
@@ -77,35 +75,27 @@ namespace _2_14Mission08.Controllers
                 return View(item);
             }
         }
-        public IActionResult MovieTable()
-        {
-            var tasks = _context.Tasks.ToList();
+        //[HttpGet]
+        //public IActionResult Edit(int id)
+        //{
+        //    var recordtoEdit = _context.Tasks
+        //        .Single(x => x.TaskId == id);
 
-            return View(tasks);
+        //    ViewBag.Categories = _context.Categories.ToList();
 
-        }
-        //get the movie id from the database and allow changes to be made
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var recordtoEdit = _context.Tasks
-                .Single(x => x.TaskId == id);
+        //    return View("MoviesCollection", recordtoEdit);
 
-            ViewBag.Categories = _context.Categories.ToList();
-
-            return View("MoviesCollection", recordtoEdit);
-
-        }
+        //}
 
         //Update and save the changes to the table 
-        [HttpPost]
-        public IActionResult Edit(MovieCollection updatedinfo)
-        {
-            _context.Update(updatedinfo);
-            _context.SaveChanges();
+        //[HttpPost]
+        //public IActionResult Edit(MovieCollection updatedinfo)
+        //{
+        //    _context.Update(updatedinfo);
+        //    _context.SaveChanges();
 
-            return RedirectToAction("MovieTable");
-        }
+        //    return RedirectToAction("MovieTable");
+        //}
 
 
     }
