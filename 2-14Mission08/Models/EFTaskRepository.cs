@@ -20,6 +20,11 @@
             _context.SaveChanges();
         }
 
+        public void Delete(TaskList task) 
+        {
+            _context.Remove(task);
+        }
+
         public List<Task> GetTasksIncludingCategories()
         {
             return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Title).ToList();
