@@ -1,7 +1,5 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model TaskList
+
 <!--Make a form for movie collection that posts to a sqllite database with info for
     movies director, year,rating, edited, length, format, and notes.
 -->
@@ -13,7 +11,7 @@
 
     <select asp-for="CategoryId">
         <option value="">Select a Category</option>
-        @foreach (Mission06_Trommlitz.Models.Category c in ViewBag.Categories)
+        @foreach (Category c in ViewBag.Categories)
         {
             <option value="@c.CategoryId">@c.CategoryName</option>
         }
@@ -28,15 +26,6 @@
 
     <label asp-for="Quadrant">Quadrant:</label><br>
     <input asp-for="Quadrant" name="Quandrant">
-
-    <br><br>
-    <label asp-for="Category">Category</label><br>
-    <select id="Category" asp-for="Category">
-        <option value="Home">Home</option>
-        <option value="School">School</option>
-        <option value="Work">Work</option>
-        <option value="Church">Church</option>
-    </select><br><br>
 
     <label asp-for="Completed">Completed</label><br>
     <input type="radio"  asp-for="Completed" value="true">
