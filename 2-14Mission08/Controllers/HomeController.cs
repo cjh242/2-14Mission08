@@ -77,34 +77,25 @@ namespace _2_14Mission08.Controllers
                 return View(item);
             }
         }
-        public IActionResult MovieTable()
-        {
-            var tasks = _context.Tasks.ToList();
-
-            return View(tasks);
-
-        }
         //get the movie id from the database and allow changes to be made
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var recordtoEdit = _context.Tasks
-                .Single(x => x.TaskId == id);
+            var recordtoEdit = _categoryRepo.GetTaskById(id);
+            ViewBag.Categories = _categoryRepo.Categories.ToList();
 
-            ViewBag.Categories = _context.Categories.ToList();
-
-            return View("MoviesCollection", recordtoEdit);
+            return View("MatrixForm", recordtoEdit);
 
         }
 
         //Update and save the changes to the table 
         [HttpPost]
-        public IActionResult Edit(MovieCollection updatedinfo)
+        public IActionResult Edit(TaskList updatedinfo)
         {
-            _context.Update(updatedinfo);
-            _context.SaveChanges();
+            _taskRepo.Update(updatedinfo);
+            _taskRepo.Save();
 
-            return RedirectToAction("MovieTable");
+            return RedirectToAction("MatrixForm");
         }
 
 

@@ -19,5 +19,10 @@
         {
             _context.SaveChanges();
         }
+
+        public void Update(Task updatedinfo)
+        {
+            _context.Update(updatedinfo);
+        }
     }
 }
