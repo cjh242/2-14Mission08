@@ -1,0 +1,9 @@
+﻿@model TaskList
+
+<p>@Model.Task</p>
+<label>Are you sure you want to delete this task?:</label>
+<form asp-controller="Home" asp-action="Delete" method="post">
+    <input type="hidden" asp-for="@Model.TaskId" />
+    <button type="submit" class="btn btn-danger">DELETE</button>
+</form>
+<a class="btn btn-info" asp-controller="Home" asp-action="MatrixForm">Cancel</a>

@@ -38,7 +38,7 @@ namespace _2_14Mission08.Controllers
             ViewBag.Categories = _categoryRepo.Categories
                 .OrderBy(x => x.CategoryName).ToList();
 
-            return View("ConfirmDelete", recordToDelete);
+            return View("Delete", recordToDelete);
         }
         [HttpPost]
         public IActionResult Delete(TaskList item)
@@ -76,12 +76,14 @@ namespace _2_14Mission08.Controllers
         }
         //get the movie id from the database and allow changes to be made
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int Id)
         {
             var recordToEdit = _taskRepo.Tasks
-                .Single(x => x.TaskId == id);
+                .Single(x => x.TaskId == Id);
 
-            return RedirectToAction("MatrixForm", recordToEdit);
+            ViewBag.Categories = _categoryRepo.Categories.ToList();
+
+            return View("MatrixForm", recordToEdit);
         }
         //Update and save the changes to the table 
         [HttpPost]
@@ -90,7 +92,7 @@ namespace _2_14Mission08.Controllers
             _taskRepo.Update(updatedinfo);
             _taskRepo.Save();
 
-            return RedirectToAction("MatrixForm");
+            return RedirectToAction("Quadrant");
         }
     }
 }

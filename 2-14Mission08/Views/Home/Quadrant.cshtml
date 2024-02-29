@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Html
+
+@model List<TaskList> // Define the model for this view
+
 @{
+    // Categorize and filter tasks by quadrant and completion status
+    var quadrant1Tasks = Model.Where(x => x.Quadrant == 1 && (!x.Completed ?? false)).ToList();
+    var quadrant2Tasks = Model.Where(x => x.Quadrant == 2 && (!x.Completed ?? false)).ToList();
+    var quadrant3Tasks = Model.Where(x => x.Quadrant == 3 && (!x.Completed ?? false)).ToList();
+    var quadrant4Tasks = Model.Where(x => x.Quadrant == 4 && (!x.Completed ?? false)).ToList();
 }
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Quadrant 1: Urgent and Important</h2>
+        <h4>Stephen Covey's Time Management Matrix</h4>
+        @RenderTasksTable(quadrant1Tasks)
+    </div>
+    <div class="col-md-6">
+        <h2>Quadrant 2: Not Urgent but Important</h2>
+        <h4>Stephen Covey's Time Management Matrix</h4>
+        @RenderTasksTable(quadrant2Tasks)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Quadrant 3: Urgent but Not Important</h2>
+        <h4>Stephen Covey's Time Management Matrix</h4>
+        @RenderTasksTable(quadrant3Tasks)
+    </div>
+    <div class="col-md-6">
+        <h2>Quadrant 4: Not Urgent and Not Important</h2>
+        <h4>Stephen Covey's Time Management Matrix</h4>
+        @RenderTasksTable(quadrant4Tasks)
+    </div>
+</div>
+
+@functions {
+    private HtmlString RenderTasksTable(IEnumerable<TaskList> tasks)
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("<table class='table table-bordered'>");
+        sb.AppendLine("<thead class='fw-bold'>");
+        sb.AppendLine("<tr>");
+        sb.AppendLine("<td>Task</td>");
+        sb.AppendLine("<td>Category</td>");
+        sb.AppendLine("<td>Due Date</td>");
+        sb.AppendLine("<td>Completed</td>");
+        sb.AppendLine("</tr>");
+        sb.AppendLine("</thead>");
+        sb.AppendLine("<tbody>");
+
+        foreach (var x in tasks)
+        {
+            sb.AppendLine("<tr>");
+            sb.AppendLine($"<td>{x.Task}</td>");
+            sb.AppendLine($"<td>{x.Category?.CategoryName}</td>");
+            sb.AppendLine($"<td>{x.DueDate}</td>"); // Assuming DueDate is a DateTime
+            sb.AppendLine($"<td>{x.Completed}</td>");
+            sb.AppendLine($"<td><a class='btn btn-info' href='{Url.Action("Edit", "Home", new { Id = x.TaskId })}'>Edit</a></td>");
+            sb.AppendLine($"<td><a class='btn btn-danger' href='{Url.Action("Delete", "Home", new { Id = x.TaskId })}'>Delete</a></td>");
+            sb.AppendLine("</tr>");
+        }
+
+        sb.AppendLine("</tbody>");
+        sb.AppendLine("</table>");
+
+        // If there are no tasks, display a message instead
+        if (!tasks.Any())
+        {
+            sb.AppendLine("<p>No incomplete tasks in this quadrant.</p>");
+        }
+
+        return new HtmlString(sb.ToString());
+    }
+}
+
