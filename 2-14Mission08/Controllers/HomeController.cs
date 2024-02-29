@@ -78,13 +78,11 @@ namespace _2_14Mission08.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var recordtoEdit = _categoryRepo.GetTaskById(id);
-            ViewBag.Categories = _categoryRepo.Categories.ToList();
+            var recordToEdit = _taskRepo.Tasks
+                .Single(x => x.TaskId == id);
 
-            return View("MatrixForm", recordtoEdit);
-
+            return View("MatrixForm", recordToEdit);
         }
-
         //Update and save the changes to the table 
         [HttpPost]
         public IActionResult Edit(TaskList updatedinfo)

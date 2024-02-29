@@ -8,12 +8,7 @@
             _context = temp;
         }
         public List<Category> Categories => _context.Categories.ToList();
-        public IQueryable<Task> Tasks => _context.TaskList;
 
-        public Task GetTaskById(int id)
-        {
-            return _context.TaskList.Single(x => x.TaskId == id);
-        }
     }
 }
-}
+

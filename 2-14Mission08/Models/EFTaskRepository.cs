@@ -20,7 +20,7 @@ namespace _2_14Mission08.Models
             _context.SaveChanges();
         }
 
-        public void Update(Task updatedinfo)
+        public void Update(TaskList updatedinfo)
         {
             _context.Update(updatedinfo);
         }
