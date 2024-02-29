@@ -8,8 +8,8 @@ namespace _2_14Mission08.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ITaskRepository _taskRepo;
-        private ICategoryRepository _categoryRepo;
+        private readonly ITaskRepository _taskRepo;
+        private readonly ICategoryRepository _categoryRepo;
 
         public HomeController(ILogger<HomeController> logger, ITaskRepository taskRepo, ICategoryRepository catRepo)
         {
@@ -81,7 +81,7 @@ namespace _2_14Mission08.Controllers
             var recordToEdit = _taskRepo.Tasks
                 .Single(x => x.TaskId == id);
 
-            return View("MatrixForm", recordToEdit);
+            return RedirectToAction("MatrixForm", recordToEdit);
         }
         //Update and save the changes to the table 
         [HttpPost]

@@ -19,7 +19,6 @@ namespace _2_14Mission08.Models
         {
             _context.SaveChanges();
         }
-
         public void Update(TaskList updatedinfo)
         {
             _context.Update(updatedinfo);
@@ -28,7 +27,6 @@ namespace _2_14Mission08.Models
         {
             _context.Remove(task);
         }
-
         public List<TaskList> GetTasksIncludingCategories()
         {
             return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Category).ToList();
