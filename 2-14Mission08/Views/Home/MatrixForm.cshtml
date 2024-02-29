@@ -26,7 +26,13 @@
     <input asp-for="DueDate"><br><br>
 
     <label asp-for="Quadrant">Quadrant:</label><br>
-    <input asp-for="Quadrant" name="Quandrant"><br><br>
+    <select asp-for="Quadrant">
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+    </select>
+    <br>
 
     <label asp-for="Completed">Completed:</label><br>
     <input type="radio"  asp-for="Completed" value="True">
