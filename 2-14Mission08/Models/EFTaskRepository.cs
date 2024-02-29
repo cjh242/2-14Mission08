@@ -25,7 +25,7 @@ namespace _2_14Mission08.Models
             _context.Remove(task);
         }
 
-        public List<Task> GetTasksIncludingCategories()
+        public List<TaskList> GetTasksIncludingCategories()
         {
             return _context.TaskLists.Include(x => x.Category).OrderBy(x => x.Category).ToList();
         }

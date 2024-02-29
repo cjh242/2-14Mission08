@@ -47,7 +47,7 @@ namespace _2_14Mission08.Controllers
             _taskRepo.Delete(item);
             _taskRepo.Save();
 
-            return RedirectToAction("ShowMovies");
+            return RedirectToAction("Quadrant");
         }
 
         [HttpGet]
