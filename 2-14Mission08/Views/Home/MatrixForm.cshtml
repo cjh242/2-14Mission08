@@ -9,6 +9,7 @@
     <input type="hidden" asp-for="TaskId" />
     <br /><br />
 
+    <label asp-for="CategoryId">Category:</label>
     <select asp-for="CategoryId">
         <option value="">Select a Category</option>
         @foreach (Category c in ViewBag.Categories)
@@ -21,13 +22,13 @@
     <label asp-for="Task">Task:</label><br>
     <input asp-for="Task" name="task"><br><br>
 
-    <label asp-for="DueDate">DueDate</label><br>
+    <label asp-for="DueDate">DueDate:</label><br>
     <input asp-for="DueDate"><br><br>
 
     <label asp-for="Quadrant">Quadrant:</label><br>
-    <input asp-for="Quadrant" name="Quandrant">
+    <input asp-for="Quadrant" name="Quandrant"><br><br>
 
-    <label asp-for="Completed">Completed</label><br>
+    <label asp-for="Completed">Completed:</label><br>
     <input type="radio"  asp-for="Completed" value="True">
     <label for="Completed">True</label>
     <input type="radio" asp-for="Completed" value="False">

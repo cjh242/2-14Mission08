@@ -65,7 +65,7 @@ namespace _2_14Mission08.Controllers
             {
                 _taskRepo.AddTask(item);
                 _taskRepo.Save();
-                return View("Index");
+                return RedirectToAction("Quadrant");
             }
             else
             {
