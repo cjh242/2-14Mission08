@@ -20,6 +20,10 @@ namespace _2_14Mission08.Models
             _context.SaveChanges();
         }
 
+        public void Update(Task updatedinfo)
+        {
+            _context.Update(updatedinfo);
+        }
         public void Delete(TaskList task) 
         {
             _context.Remove(task);
