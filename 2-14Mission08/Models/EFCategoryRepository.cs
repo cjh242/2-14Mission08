@@ -7,7 +7,6 @@
         {
             _context = temp;
         }
-
         public List<Category> Categories => _context.Categories.ToList();
         public IQueryable<Task> Tasks => _context.TaskList;
 

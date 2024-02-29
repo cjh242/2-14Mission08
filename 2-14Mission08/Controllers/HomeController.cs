@@ -17,7 +17,6 @@ namespace _2_14Mission08.Controllers
             _taskRepo = taskRepo;
             _categoryRepo = catRepo;
         }
-
         public IActionResult Index() 
         { 
             return View(); 
@@ -25,16 +24,15 @@ namespace _2_14Mission08.Controllers
         [HttpGet]
         public IActionResult Quadrant() 
         {
-            var tasks = _taskRepo.Tasks.Include(x => x.Category)
-                .OrderBy(x => x.Title).ToList();
+            var tasks = _taskRepo.GetTasksIncludingCategories();
 
             return View(tasks);
         }
         [HttpGet]
-        public IActionResult Delete(int Id) 
+        public IActionResult Delete(int Id)
         {
             //get the record to delete by id
-            var recordToDelete = _taskRepo.TaskList
+            var recordToDelete = _taskRepo.Tasks
                 .Single(x => x.TaskId == Id);
 
             ViewBag.Categories = _categoryRepo.Categories
@@ -43,13 +41,13 @@ namespace _2_14Mission08.Controllers
             return View("ConfirmDelete", recordToDelete);
         }
         [HttpPost]
-        public IActionResult Delete(TaskList task)
+        public IActionResult Delete(TaskList item)
         {
-            //delete the movie and save changes
-            _taskRepo.TaskList.Remove(task);
-            _taskRepo.SaveChanges();
+            
+            _taskRepo.Delete(item);
+            _taskRepo.Save();
 
-            return RedirectToAction("ShowMovies");
+            return RedirectToAction("Quadrant");
         }
 
         [HttpGet]
@@ -60,7 +58,6 @@ namespace _2_14Mission08.Controllers
 
             return View("MatrixForm", new TaskList());
         }
-
         [HttpPost]
         public IActionResult MatrixForm(TaskList item)
         {
@@ -68,7 +65,7 @@ namespace _2_14Mission08.Controllers
             {
                 _taskRepo.AddTask(item);
                 _taskRepo.Save();
-                return View("Index");
+                return RedirectToAction("Quadrant");
             }
             else
             {
@@ -97,7 +94,5 @@ namespace _2_14Mission08.Controllers
 
             return RedirectToAction("MatrixForm");
         }
-
-
     }
 }

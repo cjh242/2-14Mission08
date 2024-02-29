@@ -8,5 +8,9 @@
         void Save();
 
         void Update(TaskList updatedinfo);
+      
+        void Delete(TaskList task);
+
+        public List<TaskList> GetTasksIncludingCategories();
     }
 }
